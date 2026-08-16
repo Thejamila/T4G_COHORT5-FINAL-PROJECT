@@ -1,11 +1,11 @@
 """
 This file holds the interest calculation logic that used to live inside
-your original SavingsAccount.apply_interest() method.
+my original SavingsAccount.apply_interest() method.
 
 Because we now store savings accounts as rows in the same 'accounts'
 table (not a separate table), this file works with an Account object
 instead of a SavingsAccount object - but the math is identical to
-your original class.
+my original class.
 """
 
 from models.banking_account import Account, AccountType
