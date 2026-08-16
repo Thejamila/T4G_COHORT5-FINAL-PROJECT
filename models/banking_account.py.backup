@@ -1,7 +1,7 @@
 """
 This file defines the Account table.
 
-In your original terminal project, BankAccount was a Python class
+In my original terminal project, BankAccount was a Python class
 that lived only in memory (accounts = {} dict) and disappeared when
 the program closed. Here, Account is a real MySQL table - every
 account created through the API is saved permanently.
