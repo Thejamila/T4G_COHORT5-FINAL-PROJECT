@@ -13,7 +13,7 @@ out to create a customer, CustomerOut is what we hand back to them.
 from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, computed_field, computed_field
 
 from models.banking_account import AccountType
 
@@ -45,12 +45,16 @@ class TransactionRequest(BaseModel):
 
 class AccountOut(AccountBase):
     """What we send back after showing/creating/updating an account."""
-    id: int
-    customer_id: int
+    uuid: str
     created_at: datetime
 
+    @computed_field
+    @property
+    def customer_uuid(self) -> str:
+        return self.customer.uuid
+
     class Config:
-        from_attributes = True  # lets this read straight from a database object
+        from_attributes = True
 
 
 # ---------- Forms related to Customers ----------
@@ -72,7 +76,7 @@ class CustomerUpdate(BaseModel):
 
 
 class CustomerOut(CustomerBase):
-    id: int
+    uuid: str
     created_at: datetime
 
     class Config:

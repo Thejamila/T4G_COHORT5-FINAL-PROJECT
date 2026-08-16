@@ -22,10 +22,10 @@ router = APIRouter(prefix="/accounts", tags=["Transactions"])
 
 @router.post("/{account_id}/deposit", response_model=schemas.AccountOut)
 def deposit(
-    account_id: int, tx: schemas.TransactionRequest, db: Session = Depends(get_db)
+    account_uuid: str, tx: schemas.TransactionRequest, db: Session = Depends(get_db)
 ):
     repo = AccountRepository(db)
-    account = repo.get_by_id(account_id)
+    account = repo.get_by_uuid(account_uuid)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found.")
 
@@ -39,10 +39,10 @@ def deposit(
 
 @router.post("/{account_id}/withdraw", response_model=schemas.AccountOut)
 def withdraw(
-    account_id: int, tx: schemas.TransactionRequest, db: Session = Depends(get_db)
+    account_uuid: str, tx: schemas.TransactionRequest, db: Session = Depends(get_db)
 ):
     repo = AccountRepository(db)
-    account = repo.get_by_id(account_id)
+    account = repo.get_by_uuid(account_uuid)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found.")
 
@@ -54,9 +54,9 @@ def withdraw(
 
 
 @router.post("/{account_id}/apply-interest", response_model=schemas.AccountOut)
-def apply_interest(account_id: int, db: Session = Depends(get_db)):
+def apply_interest(account_uuid: str, db: Session = Depends(get_db)):
     repo = AccountRepository(db)
-    account = repo.get_by_id(account_id)
+    account = repo.get_by_uuid(account_uuid)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found.")
 

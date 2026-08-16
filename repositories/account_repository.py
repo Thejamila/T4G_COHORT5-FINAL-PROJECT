@@ -17,10 +17,10 @@ class AccountRepository:
     def get_all(self) -> List[Account]:
         return self.db.query(Account).all()
 
-    def get_by_id(self, account_id: int) -> Optional[Account]:
+    def get_by_uuid(self, account_uuid: str) -> Optional[Account]:
         return (
             self.db.query(Account)
-            .filter(Account.id == account_id)
+            .filter(Account.uuid == account_uuid)
             .first()
         )
 

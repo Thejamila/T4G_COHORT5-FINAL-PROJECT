@@ -25,10 +25,10 @@ router = APIRouter(tags=["Accounts"])
     status_code=status.HTTP_201_CREATED,
 )
 def create_account(
-    customer_id: int, account: schemas.AccountCreate, db: Session = Depends(get_db)
+    customer_uuid: str, account: schemas.AccountCreate, db: Session = Depends(get_db)
 ):
     # Make sure the customer this account belongs to actually exists first
-    if CustomerRepository(db).get_by_id(customer_id) is None:
+    if CustomerRepository(db).get_by_uuid(customer_uuid) is None:
         raise HTTPException(status_code=404, detail="Customer not found.")
 
     # Same rule as your original BankAccount class: minimum GHS 100 to open
@@ -48,8 +48,8 @@ def list_accounts(db: Session = Depends(get_db)):
 
 
 @router.get("/accounts/{account_id}", response_model=schemas.AccountOut)
-def get_account(account_id: int, db: Session = Depends(get_db)):
-    account = AccountRepository(db).get_by_id(account_id)
+def get_account(account_uuid: str, db: Session = Depends(get_db)):
+    account = AccountRepository(db).get_by_uuid(account_uuid)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found.")
     return account
@@ -57,10 +57,10 @@ def get_account(account_id: int, db: Session = Depends(get_db)):
 
 @router.put("/accounts/{account_id}", response_model=schemas.AccountOut)
 def update_account(
-    account_id: int, updates: schemas.AccountUpdate, db: Session = Depends(get_db)
+    account_uuid: str, updates: schemas.AccountUpdate, db: Session = Depends(get_db)
 ):
     repo = AccountRepository(db)
-    account = repo.get_by_id(account_id)
+    account = repo.get_by_uuid(account_uuid)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found.")
 
@@ -68,9 +68,9 @@ def update_account(
 
 
 @router.delete("/accounts/{account_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_account(account_id: int, db: Session = Depends(get_db)):
+def delete_account(account_uuid: str, db: Session = Depends(get_db)):
     repo = AccountRepository(db)
-    account = repo.get_by_id(account_id)
+    account = repo.get_by_uuid(account_uuid)
     if account is None:
         raise HTTPException(status_code=404, detail="Account not found.")
 

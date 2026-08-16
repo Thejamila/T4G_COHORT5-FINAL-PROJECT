@@ -39,8 +39,8 @@ def list_customers(db: Session = Depends(get_db)):
 
 
 @router.get("/{customer_id}", response_model=schemas.CustomerWithAccounts)
-def get_customer(customer_id: int, db: Session = Depends(get_db)):
-    customer = CustomerRepository(db).get_by_id(customer_id)
+def get_customer(customer_uuid: str, db: Session = Depends(get_db)):
+    customer = CustomerRepository(db).get_by_uuid(customer_uuid)
     if customer is None:
         raise HTTPException(status_code=404, detail="Customer not found.")
     return customer
@@ -48,10 +48,10 @@ def get_customer(customer_id: int, db: Session = Depends(get_db)):
 
 @router.put("/{customer_id}", response_model=schemas.CustomerOut)
 def update_customer(
-    customer_id: int, updates: schemas.CustomerUpdate, db: Session = Depends(get_db)
+    customer_uuid: str, updates: schemas.CustomerUpdate, db: Session = Depends(get_db)
 ):
     repo = CustomerRepository(db)
-    customer = repo.get_by_id(customer_id)
+    customer = repo.get_by_uuid(customer_uuid)
     if customer is None:
         raise HTTPException(status_code=404, detail="Customer not found.")
 
@@ -59,9 +59,9 @@ def update_customer(
 
 
 @router.delete("/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_customer(customer_id: int, db: Session = Depends(get_db)):
+def delete_customer(customer_uuid: str, db: Session = Depends(get_db)):
     repo = CustomerRepository(db)
-    customer = repo.get_by_id(customer_id)
+    customer = repo.get_by_uuid(customer_uuid)
     if customer is None:
         raise HTTPException(status_code=404, detail="Customer not found.")
 
