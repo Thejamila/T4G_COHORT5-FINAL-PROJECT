@@ -93,7 +93,7 @@ Pydantic is used to validate information sent to the API before it reaches the a
 
 For example, it checks that email addresses are valid and transaction amounts are greater than zero.
 
-### Python-dotenv
+## Python-dotenv
 
 Python-dotenv loads database credentials from the `.env` file.
 
